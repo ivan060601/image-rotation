@@ -24,10 +24,12 @@
 
 #define DECLARE_FIELD( t, n ) t n ;
 
-struct __attribute__((packed)) bmp_header 
+#pragma pack(push, 1)
+struct bmp_header 
 {
    FOR_BMP_HEADER( DECLARE_FIELD )
 };
+#pragma pack(pop)
 
 
 void bmp_header_print( struct bmp_header const* header, FILE* f );
