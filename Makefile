@@ -8,7 +8,7 @@ CXXFLAGS = -std=c18 -pedantic -Wall -Werror
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
-APPNAME = myapp
+APPNAME = image-rotate
 EXT = .c
 SRCDIR = /home/ivan/itmoProjects/image-rotation/src/include/
 OBJDIR = obj
