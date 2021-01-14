@@ -1,8 +1,8 @@
-#Как запустить 
+# Как запустить 
 
-'./image-rotate file filter'
+' ./image-rotate file filter '
 
-#Примеры 
+# Примеры 
 ![orig_image](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/i24.bmp)
 
 ![rotated_img](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/results/out.bmp)
