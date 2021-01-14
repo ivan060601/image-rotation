@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <malloc.h>
+#include <string.h>
 #include "io.h"
 
 static bool read_header( FILE* f, struct bmp_header* header ) {
@@ -90,4 +91,49 @@ enum write_status to_bmp(FILE* file, struct image* image){
         return WRITE_ERROR;
 
     return WRITE_OK;
+}
+
+struct reader_ext extentions[] =
+{
+    [BMP] = {from_bmp, to_bmp, "bmp"}
+};
+
+int get_filename_index(const char* filename) {
+    const char *dot = strrchr(filename, '.');
+    if(!dot || dot == filename) 
+        return -1;
+
+    for (int i = START+1; i < END; i++)
+    {
+        if(strcmp(extentions[i].extention, (dot+1)) == 0){
+            return i;
+        }
+    }
+    return -1;
+}
+
+enum read_status to_image(FILE* f, struct image* image, const char* filename){
+    enum supported_extentions e = (enum supported_extentions)get_filename_index(filename);
+    switch (e)
+    {
+    case BMP:
+        return (*(extentions[BMP].read_func))(f, image);
+        break;
+    default:
+        break;
+    }
+    return READ_ERROR;
+}
+
+enum write_status from_image(FILE* f, struct image* image, const char* filename){
+    enum supported_extentions e = (enum supported_extentions)get_filename_index(filename);
+    switch (e)
+    {
+    case BMP:
+        return (*(extentions[BMP].write_func))(f, image);
+        break;
+    default:
+        break;
+    }
+    return WRITE_ERROR;
 }

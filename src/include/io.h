@@ -3,7 +3,6 @@
 #include "image_structure.h"
 #include "bmp.h"
 
-
 enum read_status  {
     READ_OK = 10,
     READ_ERROR,
@@ -19,7 +18,28 @@ enum  write_status  {
     WRITE_ERROR
 };
 
-enum read_status from_bmp(FILE* file, struct image* image);
-enum write_status  to_bmp(FILE* file, struct image* image);
+typedef enum read_status  reader(FILE* file, struct image* image);
+typedef enum write_status writer(FILE* file, struct image* image);
+
+struct reader_ext{
+    reader* read_func;
+    writer* write_func;
+    const char* extention;
+};
+
+enum supported_extentions{
+    START = -1,
+    //Доступные расширения
+    BMP = 0,
+
+    END
+};
+
+reader from_bmp;
+writer to_bmp;
+
+enum read_status to_image(FILE* f, struct image* image, const char* filename);
+enum write_status from_image(FILE* f, struct image* image, const char* filename);
+
 
 #endif

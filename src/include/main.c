@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "bmp.h"
 #include "util.h"
 #include "errors.h"
 #include "io.h"
@@ -19,13 +18,13 @@ int main( int argc, char** argv ) {
     if (argc != 3) usage();
     if (argc < 3) err(describe_ru[NOT_ENOUGHT_ARGS]);
     if (argc > 3) err(describe_ru[TOO_MANY_ARGS]);
-
+    
     //Открываем файл
     FILE* f = fopen( argv[1], "rb" ); 
 
     struct image image = {0};
 
-    enum read_status read_result = from_bmp(f, &image);
+    enum read_status read_result = to_image(f, &image, argv[1]);
     if (read_result != READ_OK)
         err(describe_ru[read_result]);
     printf("%s", describe_ru[READ_OK]);
@@ -35,13 +34,14 @@ int main( int argc, char** argv ) {
 
     //struct image new_image = rotate_and_create_new_image(&image);
     rotate_existing_image(&image);
+    //grayscale_filter(&image);
 
     //Сохраняем новый файл
     FILE* fout;
     if ((fout = fopen("out.bmp", "wb"))==NULL)
         err(describe_ru[WRITE_ERROR]);
 
-    enum write_status write_result = to_bmp(fout, &image);
+    enum write_status write_result = from_image(fout, &image, "out.bmp");
     if (write_result != WRITE_OK)
         err(describe_ru[write_result]);
     printf("%s", describe_ru[WRITE_OK]);

@@ -1,6 +1,7 @@
 #ifndef _FILTERS_H_
 #define _FILTERS_H_
 #include "image_structure.h"
+
 typedef void filter(struct image const* image);
 
 filter grayscale_filter;

@@ -1,5 +1,5 @@
-#include "image_structure.h"
 #include <malloc.h>
+#include "image_structure.h"
 
 void pixel_free(struct pixel* p){
     printf("ooo\n");
