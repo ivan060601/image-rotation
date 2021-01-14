@@ -1,6 +1,7 @@
 # Как запустить 
 
-' ./image-rotate file filter '
+- ` make `
+- ` ./image-rotate file filter `
 
 # Примеры 
 ![orig_image](i24.bmp)
