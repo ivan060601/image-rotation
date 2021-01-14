@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <malloc.h>
 
 #define PRI_SPECIFIER(e) (_Generic( (e), uint16_t : "%" PRIu16, uint32_t: "%" PRIu32, default: "NOT IMPLEMENTED" ))
 
@@ -31,4 +32,8 @@ bool read_header_from_file( const char* filename, struct bmp_header* header ) {
 
     fclose( f );
     return false;
+}
+
+void malloc_header(struct bmp_header* bmp_header){
+    bmp_header = malloc(sizeof(struct bmp_header));
 }

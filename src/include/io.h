@@ -1,6 +1,5 @@
 #ifndef _IO_H_
 #define _IO_H_
-#include <stdbool.h>
 #include "image_structure.h"
 #include "bmp.h"
 
@@ -20,11 +19,7 @@ enum  write_status  {
     WRITE_ERROR
 };
 
-struct image* image_malloc();
-bool image_free(struct image * image);
-
 enum read_status from_bmp(FILE* file, struct image* image);
 enum write_status  to_bmp(FILE* file, struct image* image);
-
 
 #endif

@@ -33,4 +33,6 @@ struct __attribute__((packed)) bmp_header
 void bmp_header_print( struct bmp_header const* header, FILE* f );
 bool read_header_from_file( const char* filename, struct bmp_header* header );
 
+void malloc_header(struct bmp_header* bmp_header);
+
 #endif

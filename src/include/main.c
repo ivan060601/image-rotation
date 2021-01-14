@@ -21,13 +21,35 @@ int main( int argc, char** argv ) {
 
     //Открываем файл
     FILE* f = fopen( argv[1], "rb" ); 
-    struct image* image = image_malloc();
-    printf("%s",describe_ru[from_bmp(f, image)]);
 
+    struct image image = {0};
+    image_malloc(&image);
+
+    enum read_status read_result = from_bmp(f, &image);
+    if (read_result != READ_OK)
+        err(describe_ru[read_result]);
+    printf("%s", describe_ru[READ_OK]);
 
     //ЗАКРЫВАЕМ ФАЙЛ
     fclose(f);
 
+    //Переворачиваем image->data
+
+
+    //Сохраняем новый файл
+    FILE* fout;
+    if ((fout = fopen("out.bmp", "wb"))==NULL)
+        err(describe_ru[WRITE_ERROR]);
+
+    enum write_status write_result = to_bmp(fout, &image);
+    if (write_result != WRITE_OK)
+        err(describe_ru[write_result]);
+    printf("%s", describe_ru[WRITE_OK]);
+
+    fclose(fout);
+
+    //Это чисто для дебага
+    /*
     struct bmp_header h = { 0 };
     if (read_header_from_file( argv[1], &h )) {
         bmp_header_print( &h, stdout );
@@ -35,6 +57,6 @@ int main( int argc, char** argv ) {
     else {
         err( "Failed to open BMP file or reading header.\n" );
     }
-
+    */
     return 0;
 }
