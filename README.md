@@ -3,14 +3,14 @@
 ' ./image-rotate file filter '
 
 # Примеры 
-![orig_image](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/i24.bmp)
+![orig_image](/i24.bmp)
 
-![rotated_img](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/results/out.bmp)
+![rotated_img](/results/out.bmp)
 
-![sepia](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/results/out_sepia.bmp)
+![sepia](/results/out_sepia.bmp)
 
-![gr](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/results/out_grayscale.bmp)
+![gr](/results/out_grayscale.bmp)
 
-![inv](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/results/out_inverse.bmp)
+![inv](/results/out_inverse.bmp)
 
-![lapl](https://gitlab.se.ifmo.ru/_jovan/assignment-image-rotation/-/blob/linux-branch/results/out_laplassian.bmp)
+![lapl](blob/linux-branch/results/out_laplassian.bmp)
