@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <stdbool.h>
 #ifndef _IMAGE_STRUCT_
 #define _IMAGE_STRUCT_
 
@@ -10,7 +9,6 @@ struct image {
     struct pixel* data;
 };
 
-void image_malloc(struct image* image);
-bool image_free(struct image * image);
+void image_free(struct image * image);
 
 #endif
