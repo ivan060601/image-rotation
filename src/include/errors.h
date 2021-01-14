@@ -4,11 +4,6 @@
 #include <stdint.h>
 #include "io.h"
 
-enum rotate_status {
-    ROTATE_SUCCESS = 30,
-    ROTATE_ERROR
-};
-
 const char* describe_ru[] =
 {
     [READ_OK] = "Файл успешно открыт\n",
@@ -19,9 +14,7 @@ const char* describe_ru[] =
     [WRITE_OK] = "Файл успешно записан\n",
     [WRITE_ERROR] = "Ошибка записи файла\n",
     [NOT_ENOUGHT_ARGS] = "Недостаточно входных параметров для запуска программы\n",
-    [TOO_MANY_ARGS] = "Слишком много входных параметров для запуска программы\n",
-    [ROTATE_SUCCESS] = "Картинка успешно повернута\n",
-    [ROTATE_ERROR] = "Ошибка в ходе поворачивания изображения\n"
+    [TOO_MANY_ARGS] = "Слишком много входных параметров для запуска программы\n"
 };
 
 

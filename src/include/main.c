@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "util.h"
 #include "errors.h"
@@ -7,6 +8,29 @@
 #include "image_structure.h"
 #include "filters.h"
 
+struct filter_text{
+    filter* f;
+    const char* name;
+};
+
+struct filter_text filters[] = {
+    [GRAYSCALE] = {grayscale_filter, "grayscale"},
+    [INVERSE] = {inverse, "inverse"},
+    [SEPIA] = {sepia, "sepia"},
+    [LAPLASSIAN] = {laplassian, "laplassian"},
+    [ROTATE_EX] = {NULL, "rotate-ex"},
+    [ROTATE_SAVE] = {NULL, "rotate-s"}
+};
+
+int get_filter_id(const char* fil){
+    for (int i = START_FIL+1; i < END_FIL; i++)
+    {
+        if(strcmp(filters[i].name, fil) == 0){
+            return i;
+        }
+    }
+    return -1;
+}
 
 void usage() {
     //Напоминаем пользователю, как же пользоваться программой
@@ -33,8 +57,29 @@ int main( int argc, char** argv ) {
     fclose(f);
 
     //struct image new_image = rotate_and_create_new_image(&image);
-    rotate_existing_image(&image);
-    //grayscale_filter(&image);
+    //rotate_existing_image(&image);
+    //sepia(&image);
+
+    enum available_filters desired_filter = (enum available_filters)get_filter_id(argv[2]);
+    
+    switch (desired_filter)
+    {
+    case GRAYSCALE:
+    case INVERSE:
+    case SEPIA:
+    case LAPLASSIAN:
+        (*(filters[desired_filter].f))(&image);
+        break;
+    case ROTATE_SAVE:
+        //struct image new_image = rotate_and_create_new_image(&image);
+        break;
+    case ROTATE_EX:
+        rotate_existing_image(&image);
+        break;
+    default:
+        err("Неверный фильтр");
+        break;
+    }    
 
     //Сохраняем новый файл
     FILE* fout;

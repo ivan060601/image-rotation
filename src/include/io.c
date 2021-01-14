@@ -103,7 +103,7 @@ int get_filename_index(const char* filename) {
     if(!dot || dot == filename) 
         return -1;
 
-    for (int i = START+1; i < END; i++)
+    for (int i = START_EXT+1; i < END_EXT; i++)
     {
         if(strcmp(extentions[i].extention, (dot+1)) == 0){
             return i;

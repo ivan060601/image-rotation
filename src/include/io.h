@@ -28,11 +28,11 @@ struct reader_ext{
 };
 
 enum supported_extentions{
-    START = -1,
+    START_EXT = -1,
     //Доступные расширения
     BMP = 0,
 
-    END
+    END_EXT
 };
 
 reader from_bmp;
