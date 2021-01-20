@@ -32,6 +32,19 @@ int get_filter_id(const char* fil){
     return -1;
 }
 
+void save(struct image* image){
+    FILE* fout;
+    if ((fout = fopen("out.bmp", "wb"))==NULL)
+        err(describe_ru[WRITE_ERROR]);
+
+    enum write_status write_result = from_image(fout, image, "out.bmp");
+    if (write_result != WRITE_OK)
+        err(describe_ru[write_result]);
+    printf("%s", describe_ru[WRITE_OK]);
+
+    fclose(fout);
+}
+
 void usage() {
     //Напоминаем пользователю, как же пользоваться программой
     fprintf(stderr, "Usage: ./print_header BMP_FILE_NAME filter_name\n"); 
@@ -56,11 +69,8 @@ int main( int argc, char** argv ) {
     //ЗАКРЫВАЕМ ФАЙЛ
     fclose(f);
 
-    //struct image new_image = rotate_and_create_new_image(&image);
-    //rotate_existing_image(&image);
-    //sepia(&image);
-
-    enum available_filters desired_filter = (enum available_filters)get_filter_id(argv[2]);
+    const enum available_filters desired_filter = (enum available_filters)get_filter_id(argv[2]);
+    struct image new_image = {0};
     
     switch (desired_filter)
     {
@@ -69,28 +79,20 @@ int main( int argc, char** argv ) {
     case SEPIA:
     case LAPLASSIAN:
         (*(filters[desired_filter].f))(&image);
+        save(&image);
         break;
     case ROTATE_SAVE:
-        //struct image new_image = rotate_and_create_new_image(&image);
+        new_image = rotate(&image);
+        save(&new_image);
         break;
     case ROTATE_EX:
         rotate_existing_image(&image);
+        save(&image);    
         break;
     default:
-        err("Неверный фильтр");
+        err("Неверный фильтр\n");
         break;
-    }    
+    }
 
-    //Сохраняем новый файл
-    FILE* fout;
-    if ((fout = fopen("out.bmp", "wb"))==NULL)
-        err(describe_ru[WRITE_ERROR]);
-
-    enum write_status write_result = from_image(fout, &image, "out.bmp");
-    if (write_result != WRITE_OK)
-        err(describe_ru[write_result]);
-    printf("%s", describe_ru[WRITE_OK]);
-
-    fclose(fout);
     return 0;
 }

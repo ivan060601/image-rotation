@@ -1,5 +1,6 @@
 #ifndef _IO_H_
 #define _IO_H_
+#define BMP_SIGNATURE 19778
 #include "image_structure.h"
 #include "bmp.h"
 

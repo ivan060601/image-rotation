@@ -24,6 +24,6 @@ filter sepia;
 
 void rotate_existing_image(struct image* const image);
 
-struct image rotate_and_create_new_image(struct image const* image);
+struct image rotate(struct image const* image);
 
 #endif

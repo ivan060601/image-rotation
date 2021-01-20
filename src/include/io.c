@@ -16,7 +16,7 @@ enum read_status from_bmp(FILE* file, struct image* image){
     struct bmp_header header = {0};
     if (!read_header(file, &header))
         return READ_INVALID_BITS;
-    if (header.bfType != 19778)
+    if (header.bfType != BMP_SIGNATURE)
         return READ_INVALID_SIGNATURE;
     if(header.bfReserved != 0 || header.biCompression !=0 || header.biPlanes != 1 || header.biSize != 40 || header.biBitCount != 24 || header.biSizeImage == 0)
         return READ_INVALID_HEADER;
@@ -32,14 +32,14 @@ enum read_status from_bmp(FILE* file, struct image* image){
     image->width = header.biWidth;
     image->height = header.biHeight;
     
-    uint8_t padding = header.biWidth % 4;
+    const uint64_t padding = header.biWidth % 4;
     
-    for (size_t i = 0; i < header.biHeight; i++)
+    for (uint64_t i = 0; i < header.biHeight; i++)
     {
-        for (size_t j = 0; j < header.biWidth; j++)
+        for (uint64_t j = 0; j < header.biWidth; j++)
         {
-            size_t current = i * header.biWidth + j;
-            size_t delta = sizeof(struct pixel) * current + padding * i;
+            const uint64_t current = i * header.biWidth + j;
+            const uint64_t delta = sizeof(struct pixel) * current + padding * i;
             image->data[current] = *(struct pixel*)(data + delta);
         }
     }
@@ -48,12 +48,10 @@ enum read_status from_bmp(FILE* file, struct image* image){
     return READ_OK;
 }
 
-enum write_status to_bmp(FILE* file, struct image* image){
-
-    //Создадим заголовок будущего файла
+struct bmp_header create_header(struct image* image){
     struct bmp_header new_header = {
-        .bfType = 19778,
-        .bfileSize = sizeof(struct bmp_header) + image->height * (image->width * sizeof(struct pixel) + image->width % 4),
+        .bfType = BMP_SIGNATURE,
+        .bfileSize = sizeof(struct bmp_header) + image->height * (image->width * sizeof(struct pixel*) + image->width % 4),
         .bfReserved = 0,
         .bOffBits = sizeof(struct bmp_header),
         .biSize = 40,
@@ -68,26 +66,22 @@ enum write_status to_bmp(FILE* file, struct image* image){
         .biClrUsed = 0,
         .biClrImportant = 0
     };
+    return new_header;
+}
+
+enum write_status to_bmp(FILE* file, struct image* image){
+
+    //Создадим заголовок будущего файла
+    const struct bmp_header new_header = create_header(image);
 
     //Пишем заголовок
     if (!fwrite(&new_header, 1, sizeof(struct bmp_header), file))
         return WRITE_ERROR;
 
-    uint8_t padding = image->width % 4;
-    uint8_t *data = malloc(sizeof(struct pixel)*image->height*(image->width+padding));
-
-    //Получаем данные для записи
-    for (size_t i = 0; i < image->height; i++)
-    {
-        for (size_t j = 0; j < image->width; j++)
-        {
-            size_t current = i * image->width + j;
-            *((struct pixel *) (data + sizeof(struct pixel) * current + i * padding)) = image->data[current];
-        }
-    }
+    const uint8_t padding = image->width % 4;
     
     //Пишем данные
-    if (!fwrite(data, 1, (image->width + (padding)) * image->height * sizeof(struct pixel), file))
+    if (!fwrite(image->data, 1, (image->width + (padding)) * image->height * sizeof(struct pixel), file))
         return WRITE_ERROR;
 
     return WRITE_OK;
@@ -113,12 +107,11 @@ int get_filename_index(const char* filename) {
 }
 
 enum read_status to_image(FILE* f, struct image* image, const char* filename){
-    enum supported_extentions e = (enum supported_extentions)get_filename_index(filename);
+    const enum supported_extentions e = (enum supported_extentions)get_filename_index(filename);
     switch (e)
     {
     case BMP:
         return (*(extentions[BMP].read_func))(f, image);
-        break;
     default:
         break;
     }
@@ -126,12 +119,11 @@ enum read_status to_image(FILE* f, struct image* image, const char* filename){
 }
 
 enum write_status from_image(FILE* f, struct image* image, const char* filename){
-    enum supported_extentions e = (enum supported_extentions)get_filename_index(filename);
+    const enum supported_extentions e = (enum supported_extentions)get_filename_index(filename);
     switch (e)
     {
     case BMP:
         return (*(extentions[BMP].write_func))(f, image);
-        break;
     default:
         break;
     }
