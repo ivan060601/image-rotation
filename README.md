@@ -14,4 +14,4 @@
 
 ![inv](results/out_inverse.bmp)
 
-![lapl](blob/linux-branch/results/out_laplassian.bmp)
+![lapl](results/out_laplassian.bmp)
