@@ -24,15 +24,15 @@
 
 #define DECLARE_FIELD( t, n ) t n ;
 
-#pragma pack(push, 1)
-struct bmp_header 
+struct __attribute__((packed)) bmp_header 
 {
    FOR_BMP_HEADER( DECLARE_FIELD )
 };
-#pragma pack(pop)
 
 
 void bmp_header_print( struct bmp_header const* header, FILE* f );
 bool read_header_from_file( const char* filename, struct bmp_header* header );
+
+void malloc_header(struct bmp_header* bmp_header);
 
 #endif

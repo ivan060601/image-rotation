@@ -9,4 +9,3 @@ _Noreturn void err( const char* msg, ... ) {
   va_end (args);
   exit(1);
 }
-
