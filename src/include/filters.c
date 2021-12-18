@@ -63,7 +63,7 @@ void sepia(struct image const* image){
             const uint8_t curr_r = current_pixel->r;
             const uint8_t curr_g = current_pixel->g;
             const uint8_t curr_b = current_pixel->b;
-            current_pixel->b = curr_r * 0.272 + curr_g * 0.534 + curr_b * 0.131;
+            current_pixel->b = curr_r * 0.272 + curr_g * 0.543 + curr_b * 0.131;
             current_pixel->g = curr_r * 0.349 + curr_g * 0.686 + curr_b * 0.168;
             current_pixel->r = curr_r * 0.393 + curr_g * 0.769 + curr_b * 0.189;
         }
